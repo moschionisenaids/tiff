@@ -1,52 +1,106 @@
-# 📱 Controle de Estoque de Limpeza - App Mobile
+# Tiff
 
-Aplicativo mobile desenvolvido em **React Native** para o gerenciamento e controle do estoque de produtos de limpeza, focado em oferecer uma interface rápida, simples e intuitiva para uso no dia a dia.
+Aplicativo mobile em React Native com Expo para gerenciamento de usuários e cadastro de produtos de limpeza, com fluxo de autenticação e formulário de cadastro de itens de estoque.
 
----
+## Visão geral
 
-## 🎯 Objetivo
+Este projeto foi desenvolvido para facilitar o controle de produtos de limpeza, permitindo:
 
-Permitir que as colaboradoras da limpeza e responsáveis pelo setor consultem, cadastrem, editem e acompanhem a quantidade de materiais disponíveis no estoque diretamente pelo smartphone.
+- cadastro de usuários;
+- login do usuário;
+- cadastro de produtos com categoria, fornecedor, validade e descrição;
+- validação de campos e mensagens de erro do backend; e
+- navegação entre telas do app.
 
----
+## Stack
 
-## 🚀 Tecnologias Utilizadas
+- React Native
+- Expo
+- React Navigation
+- Axios
+- Async Storage
 
-* **React Native** (com Expo)
-* **JavaScript / TypeScript**
-* **Axios** (para comunicação e integração com a API Laravel)
-* **React Navigation** (para gerenciamento das telas da aplicação)
-
----
-
-## ⚙️ Funcionalidades do App
-
-* 🔐 **Autenticação:** Tela de login e cadastro de usuários.
-* 📦 **Consulta de Estoque:** Listagem em tempo real de todos os produtos cadastrados.
-* ➕ **Cadastro de Produtos:** Formulário para inserção de novos materiais com nome, código, quantidade, categoria, fornecedor, validade e descrição.
-* ✏️ **Atualização e Edição:** Edição simples e rápida das informações de qualquer item do estoque.
-* 🗑️ **Exclusão de Produtos:** Remoção de produtos quando necessário.
-* ⚠️ **Alerta de Estoque:** Identificação visual de itens com baixa quantidade ou próximos da data de vencimento.
-
----
-
-## 🔧 Como Executar o Projeto Mobile
-
-### Pré-requisitos
-* **Node.js** instalado na máquina.
-* Aplicativo **Expo Go** instalado no celular (Android ou iOS) ou um emulador configurado.
-
-### Passos para Instalação:
+## Estrutura do projeto
 
 ```bash
-# 1. Clonar o repositório
-git clone [https://github.com/usuario/controle-estoque-limpeza.git](https://github.com/usuario/controle-estoque-limpeza.git)
+.
+├── App.js
+├── app.json
+├── index.js
+├── package.json
+├── assets/
+├── pages/
+│   ├── splash.js
+│   ├── login.js
+│   ├── cadastro.js
+│   └── cadastroproduto.js
+└── README.md
+```
 
-# 2. Acessar a pasta do aplicativo mobile
-cd controle-estoque-limpeza/mobile
+## Funcionalidades
 
-# 3. Instalar as dependências do projeto
+- Tela de splash inicial;
+- Login com email e senha;
+- Cadastro de usuário com nome, email, senha, CPF e data de nascimento;
+- Cadastro de produto com nome, código, estoque, categoria, fornecedor, validade e descrição;
+- Validação de campos obrigatórios;
+- Alertas para sucesso, erro de validação e falha de conexão com a API.
+
+## Requisitos
+
+Antes de executar o projeto, certifique-se de ter instalado:
+
+- Node.js
+- npm
+- Expo Go no celular, ou um emulador Android/iOS configurado
+
+## Instalação
+
+```bash
+git clone https://github.com/moschionisenaids/tiff.git
+cd tiff
 npm install
+```
 
-# 4. Iniciar o servidor do Expo
-npx expo start
+## Como executar
+
+### Emulador ou dispositivo físico
+
+```bash
+npm start
+```
+
+Depois, escolha uma opção:
+
+- pressionando `a` para abrir no emulador Android;
+- pressionando `i` para abrir no simulador iOS;
+- escaneando o QR Code com o app Expo Go no celular.
+
+### Executar diretamente no Android
+
+```bash
+npm run android
+```
+
+## Observações sobre a API
+
+O app comunica com uma API Laravel em `http://10.0.2.2:8000`. Esse endereço é necessário para emuladores Android, pois representa o localhost do ambiente host da máquina.
+
+Endpoints usados no app:
+
+- `POST /api/login`
+- `POST /api/cadastro_usuario`
+- `POST /api/cadastro_produto`
+
+## Como contribuir
+
+1. Faça um fork do projeto.
+2. Crie uma branch para sua feature ou correção.
+3. Faça suas alterações.
+4. Realize o commit.
+5. Abra um pull request.
+
+## Licença
+
+Este projeto está disponível para uso educacional e de desenvolvimento local.
+

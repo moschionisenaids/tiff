@@ -134,8 +134,7 @@ export default function Login({ navigation }) {
 
                     <TouchableOpacity
                         style={styles.botao}
-                          onPress={() => navigation.navigate("CadastroProduto")}
-                        
+                        onPress={login}
                     >
                         <Text style={styles.textoBotao}>
                             Entrar

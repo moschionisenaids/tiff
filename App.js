@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Splash from "./pages/splash";
 import Login from "./pages/login";
 import Cadastro from "./pages/cadastro";
+import Home from "./pages/home";
 import CadastroProduto from "./pages/cadastroproduto";
 
 const Stack = createNativeStackNavigator();
@@ -34,7 +35,12 @@ export default function App() {
                     component={Cadastro}
                 />
 
-                  <Stack.Screen
+                <Stack.Screen
+                    name="Home"
+                    component={Home}
+                />
+
+                <Stack.Screen
                     name="CadastroProduto"
                     component={CadastroProduto}
                 />
