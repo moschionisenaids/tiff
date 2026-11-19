@@ -45,7 +45,7 @@ export default function Cadastro({ navigation }) {
         try {
 
             const response = await axios.post(
-                "http://10.122.42.21:8000/api/cadastro_usuario",
+                "http://10.122.42.26:8000/api/cadastro_usuario",
                 {
                     nome: nome,
                     email: email,

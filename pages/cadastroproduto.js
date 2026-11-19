@@ -74,7 +74,7 @@ export default function CadastroProduto({ navigation }) {
         try {
 
             const response = await axios.post(
-                "http://10.122.42.21:8000/api/cadastro_produto",
+                "http://10.122.42.26:8000/api/cadastro_produto",
                 {
                     nome_produto: nome,
                     codigo: codigo,
