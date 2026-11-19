@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import {
     View,
@@ -21,6 +22,7 @@ export default function CadastroProduto({ navigation }) {
     const [nome, setNome] = useState("");
     const [codigo, setCodigo] = useState("");
     const [estoque, setEstoque] = useState("");
+    const [limiteEstoqueBaixo, setLimiteEstoqueBaixo] = useState("");
     const [categoria, setCategoria] = useState("");
     const [fornecedor, setFornecedor] = useState("");
     const [validade, setValidade] = useState("");
@@ -37,7 +39,6 @@ export default function CadastroProduto({ navigation }) {
     ];
 
     // Converte DD/MM/AAAA para AAAA-MM-DD
-    // Formato aceito pelo Laravel
     function formatApi(data) {
 
         if (!data || !data.includes("/")) {
@@ -55,6 +56,7 @@ export default function CadastroProduto({ navigation }) {
         if (
             nome.trim() === "" ||
             estoque.trim() === "" ||
+            limiteEstoqueBaixo.trim() === "" ||
             fornecedor.trim() === "" ||
             codigo.trim() === "" ||
             categoria.trim() === "" ||
@@ -72,11 +74,12 @@ export default function CadastroProduto({ navigation }) {
         try {
 
             const response = await axios.post(
-                "http://10.0.2.2:8000/api/cadastro_produto",
+                "http://10.122.42.21:8000/api/cadastro_produto",
                 {
                     nome_produto: nome,
                     codigo: codigo,
                     estoque: Number(estoque),
+                    limite_estoque_baixo: Number(limiteEstoqueBaixo),
                     categoria: categoria,
                     fornecedor: fornecedor,
                     data_validade: formatApi(validade),
@@ -86,7 +89,6 @@ export default function CadastroProduto({ navigation }) {
 
             console.log("Resposta da API:", response.data);
 
-            // Laravel retorna erro: "s" quando deu problema
             if (response.data.erro === "s") {
 
                 Alert.alert(
@@ -98,7 +100,6 @@ export default function CadastroProduto({ navigation }) {
                 return;
             }
 
-            // Cadastro realizado
             Alert.alert(
                 "Sucesso!",
                 response.data.mensagem ||
@@ -117,7 +118,6 @@ export default function CadastroProduto({ navigation }) {
 
             console.log("Erro completo:", error);
 
-            // Erro de validação do Laravel
             if (error.response) {
 
                 console.log(
@@ -125,8 +125,6 @@ export default function CadastroProduto({ navigation }) {
                     error.response.data
                 );
 
-                // Laravel normalmente retorna 422 quando
-                // a validação falha
                 if (error.response.status === 422) {
 
                     const erros = error.response.data.errors;
@@ -173,6 +171,7 @@ export default function CadastroProduto({ navigation }) {
 
         setNome("");
         setEstoque("");
+        setLimiteEstoqueBaixo("");
         setFornecedor("");
         setCodigo("");
         setCategoria("");
@@ -195,8 +194,6 @@ export default function CadastroProduto({ navigation }) {
 
                 <View style={styles.card}>
 
-                    {/* TÍTULO */}
-
                     <Text style={styles.titulo}>
                         Cadastro de
                     </Text>
@@ -204,7 +201,6 @@ export default function CadastroProduto({ navigation }) {
                     <Text style={styles.subtitulo}>
                         Produto
                     </Text>
-
 
                     {/* NOME DO PRODUTO */}
 
@@ -219,7 +215,6 @@ export default function CadastroProduto({ navigation }) {
                         value={nome}
                         onChangeText={setNome}
                     />
-
 
                     {/* ESTOQUE */}
 
@@ -236,6 +231,20 @@ export default function CadastroProduto({ navigation }) {
                         onChangeText={setEstoque}
                     />
 
+                    {/* LIMITE DE ESTOQUE BAIXO */}
+
+                    <Text style={styles.label}>
+                        Limite de Estoque Baixo
+                    </Text>
+
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Defina quando o estoque estará baixo"
+                        placeholderTextColor="#999"
+                        keyboardType="numeric"
+                        value={limiteEstoqueBaixo}
+                        onChangeText={setLimiteEstoqueBaixo}
+                    />
 
                     {/* FORNECEDOR */}
 
@@ -251,7 +260,6 @@ export default function CadastroProduto({ navigation }) {
                         onChangeText={setFornecedor}
                     />
 
-
                     {/* CÓDIGO */}
 
                     <Text style={styles.label}>
@@ -266,7 +274,6 @@ export default function CadastroProduto({ navigation }) {
                         onChangeText={setCodigo}
                         autoCapitalize="characters"
                     />
-
 
                     {/* CATEGORIA */}
 
@@ -295,7 +302,6 @@ export default function CadastroProduto({ navigation }) {
 
                     </TouchableOpacity>
 
-
                     {/* DATA DA VALIDADE */}
 
                     <Text style={styles.label}>
@@ -311,7 +317,6 @@ export default function CadastroProduto({ navigation }) {
                         keyboardType="numeric"
                         maxLength={10}
                     />
-
 
                     {/* DESCRIÇÃO */}
 
@@ -329,50 +334,35 @@ export default function CadastroProduto({ navigation }) {
                         textAlignVertical="top"
                     />
 
-
                     {/* BOTÕES */}
 
                     <View style={styles.botoes}>
-
-                        {/* CADASTRAR */}
 
                         <TouchableOpacity
                             style={styles.botaoCadastrar}
                             onPress={cadastrarProduto}
                         >
-
                             <Text style={styles.textoBotao}>
                                 Cadastrar
                             </Text>
-
                         </TouchableOpacity>
-
-
-                        {/* LIMPAR */}
 
                         <TouchableOpacity
                             style={styles.botaoLimpar}
                             onPress={limparCampos}
                         >
-
                             <Text style={styles.textoBotao}>
                                 Limpar
                             </Text>
-
                         </TouchableOpacity>
-
-
-                        {/* CANCELAR */}
 
                         <TouchableOpacity
                             style={styles.botaoCancelar}
                             onPress={() => navigation.goBack()}
                         >
-
                             <Text style={styles.textoBotao}>
                                 Cancelar
                             </Text>
-
                         </TouchableOpacity>
 
                     </View>
@@ -380,7 +370,6 @@ export default function CadastroProduto({ navigation }) {
                 </View>
 
             </ScrollView>
-
 
             {/* MODAL DE CATEGORIA */}
 
@@ -399,7 +388,6 @@ export default function CadastroProduto({ navigation }) {
                             Selecione a categoria
                         </Text>
 
-
                         <FlatList
                             data={categorias}
                             keyExtractor={(item) => item}
@@ -408,32 +396,25 @@ export default function CadastroProduto({ navigation }) {
                                 <TouchableOpacity
                                     style={styles.itemCategoria}
                                     onPress={() => {
-
                                         setCategoria(item);
                                         setModalCategoria(false);
-
                                     }}
                                 >
-
                                     <Text style={styles.textoItem}>
                                         {item}
                                     </Text>
-
                                 </TouchableOpacity>
 
                             )}
                         />
 
-
                         <TouchableOpacity
                             style={styles.fecharModal}
                             onPress={() => setModalCategoria(false)}
                         >
-
                             <Text style={styles.textoFechar}>
                                 Fechar
                             </Text>
-
                         </TouchableOpacity>
 
                     </View>
@@ -449,12 +430,9 @@ export default function CadastroProduto({ navigation }) {
 
 const styles = StyleSheet.create({
 
-    // FUNDO
-
     background: {
         flex: 1,
     },
-
 
     scroll: {
         flexGrow: 1,
@@ -463,32 +441,22 @@ const styles = StyleSheet.create({
         paddingVertical: 30,
     },
 
-
-    // CARD
-
     card: {
         width: width * 0.82,
         backgroundColor: "#F4B8C9",
         borderRadius: 25,
-
         paddingHorizontal: 20,
         paddingTop: 20,
         paddingBottom: 18,
-
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
             height: 3,
         },
-
         shadowOpacity: 0.15,
         shadowRadius: 5,
-
         elevation: 5,
     },
-
-
-    // TÍTULO
 
     titulo: {
         color: "#C6537D",
@@ -499,7 +467,6 @@ const styles = StyleSheet.create({
         lineHeight: 29,
     },
 
-
     subtitulo: {
         color: "#C6537D",
         fontSize: 25,
@@ -509,66 +476,45 @@ const styles = StyleSheet.create({
         marginBottom: 13,
     },
 
-
-    // LABELS
-
     label: {
         color: "#C6537D",
         fontSize: 12,
         fontWeight: "bold",
-
         marginLeft: 7,
         marginBottom: 3,
         marginTop: 5,
     },
 
-
-    // INPUTS
-
     input: {
         width: "100%",
         height: 34,
-
         backgroundColor: "#FFFFFF",
-
         borderRadius: 18,
-
         paddingHorizontal: 12,
-
         fontSize: 11,
         color: "#555",
     },
 
-
-    // CATEGORIA
-
     inputCategoria: {
         width: "100%",
         height: 34,
-
         backgroundColor: "#FFFFFF",
-
         borderRadius: 18,
-
         paddingHorizontal: 12,
-
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
     },
-
 
     placeholderCategoria: {
         color: "#999",
         fontSize: 11,
     },
 
-
     textoCategoria: {
         color: "#555",
         fontSize: 11,
     },
-
 
     seta: {
         color: "#777",
@@ -576,67 +522,45 @@ const styles = StyleSheet.create({
         marginRight: 2,
     },
 
-
-    // DESCRIÇÃO
-
     descricao: {
         width: "100%",
         height: 69,
-
         backgroundColor: "#FFFFFF",
-
         borderRadius: 17,
-
         paddingHorizontal: 12,
         paddingTop: 10,
-
         fontSize: 10,
         color: "#555",
     },
-
-
-    // BOTÕES
 
     botoes: {
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
-
         gap: 6,
-
         marginTop: 13,
     },
 
-
     botaoCadastrar: {
         backgroundColor: "#00C875",
-
         borderRadius: 15,
-
         paddingHorizontal: 10,
         paddingVertical: 5,
     },
 
-
     botaoLimpar: {
         backgroundColor: "#FFD600",
-
         borderRadius: 15,
-
         paddingHorizontal: 11,
         paddingVertical: 5,
     },
 
-
     botaoCancelar: {
         backgroundColor: "#FF3838",
-
         borderRadius: 15,
-
         paddingHorizontal: 10,
         paddingVertical: 5,
     },
-
 
     textoBotao: {
         color: "#FFFFFF",
@@ -644,79 +568,53 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
 
-
-    // MODAL
-
     modalFundo: {
         flex: 1,
-
         backgroundColor: "rgba(0,0,0,0.45)",
-
         justifyContent: "center",
         alignItems: "center",
     },
 
-
     modal: {
         width: "75%",
         maxHeight: "65%",
-
         backgroundColor: "#F6C9D7",
-
         borderRadius: 20,
-
         padding: 20,
     },
 
-
     tituloModal: {
         color: "#C6537D",
-
         fontSize: 18,
         fontWeight: "bold",
-
         textAlign: "center",
-
         marginBottom: 12,
     },
 
-
     itemCategoria: {
         backgroundColor: "#FFFFFF",
-
         paddingVertical: 12,
         paddingHorizontal: 15,
-
         borderRadius: 15,
-
         marginBottom: 7,
     },
 
-
     textoItem: {
         color: "#C6537D",
-
         fontSize: 14,
         fontWeight: "bold",
     },
 
-
     fecharModal: {
         backgroundColor: "#FF3838",
-
         borderRadius: 15,
-
         paddingVertical: 9,
-
         alignItems: "center",
-
         marginTop: 8,
     },
 
-
     textoFechar: {
         color: "#FFFFFF",
-
         fontWeight: "bold",
     },
 

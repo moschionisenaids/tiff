@@ -33,7 +33,7 @@ export default function Login({ navigation }) {
         try {
 
             const response = await axios.post(
-                "http://10.0.2.2:8000/api/login",
+                "http://10.122.42.21:8000/api/login",
                 {
                     email: email,
                     senha: senha,
